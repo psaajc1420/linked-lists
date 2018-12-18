@@ -1,0 +1,12 @@
+# do not include makefiles
+makefile
+# do not include python 3 bytecode
+__pycache__
+# do not include settings for vscode
+.vscode
+# do not include object files, 
+*.o 
+*.a
+*.tmp
+*.out
+*.doc
