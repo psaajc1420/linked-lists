@@ -50,6 +50,7 @@ class LinkedList {
   void Insert(T);
   // void popFront();
   // void popBack();
+  void Remove(T);
 
   void Sort();
 
@@ -217,24 +218,6 @@ void LinkedList<T>::Clear() {
 }
 
 template <typename T>
-void LinkedList<T>::PushBack(T data) {
-
-  Node<T>* newNode = new Node<T>();
-  newNode->data = data;
-  newNode->next = nullptr;
-
-  if(head_ != nullptr) {
-    tail_->next = newNode;
-    tail_ = newNode;
-  } else {
-    head_ = newNode;
-    tail_ = head_;
-  }
-
-  length_++;
-}
-
-template <typename T>
 void LinkedList<T>::Sort() {
   MergeSort(&head_);
 }
@@ -377,6 +360,74 @@ void LinkedList<T>::Insert(T data) {
       }
       current = current->next;
     }
+  } else {
+    head_ = newNode;
+    tail_ = head_;
+  }
+
+  length_++;
+}
+
+template <typename T>
+void LinkedList<T>::Remove(T data) {
+  assert(head_ != nullptr);
+  // Check if list only contains one element.
+  if(head_->next == nullptr) {
+    delete head_;
+    Initialize();
+  } else {
+
+    Node<T>* current = head_;
+    Node<T>* previous = nullptr;
+    Node<T>* temp = nullptr;
+
+    // iterate over the list until the last element
+    // is reached then break if the data was not found
+    while(current->next != nullptr) {
+      if(current->data == data) break;
+      previous = current;
+      current = current->next;
+    }
+
+    // check whether or not current is the first node
+    // or last node as they are special cases
+    if(current == head_) {
+      temp = current;
+      head_ = current->next;
+      delete temp;
+      length_--;
+    } else if(current->next == nullptr) {
+      if(current->data == data) {
+        temp = current;
+        previous->next = nullptr;
+        current = previous;
+        tail_ = current;
+        delete temp;
+        length_--;
+      }
+      current = current->next;
+    } else if(current != nullptr) {
+      temp = current;
+      previous->next = current->next;
+      delete temp;
+      length_--;
+    } else {
+      std::cerr << "Something is very wrong" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+
+template <typename T>
+void LinkedList<T>::PushBack(T data) {
+
+  Node<T>* newNode = new Node<T>();
+  newNode->data = data;
+  newNode->next = nullptr;
+
+  if(head_ != nullptr) {
+    tail_->next = newNode;
+    tail_ = newNode;
   } else {
     head_ = newNode;
     tail_ = head_;

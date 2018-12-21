@@ -52,6 +52,7 @@ class AssignmentOperatorTest : public LinkedListTest { };
 class CopyConstructorTest : public LinkedListTest { };
 class IsEmptyTest : public LinkedListTest { };
 class ClearTest : public LinkedListTest { };
+class RemoveTest : public LinkedListTest { };
 
 class SortTest : public testing::Test {
  protected:
@@ -223,6 +224,43 @@ TEST_F(SortTest, CheckComparisonSort) {
     EXPECT_TRUE(kSortedNumsReverse[i] == *it);
     ++it;
   }
+}
+
+TEST_F(RemoveTest, CheckSize) {
+  list_->Remove(534.342);
+  EXPECT_EQ(2, list_->Size());
+}
+
+TEST_F(RemoveTest, CheckInBetweenRemove) {
+
+  double num_remove = 534.342;
+  list_->Remove(num_remove);
+
+  LinkedList<double>::iterator it;
+  for(it = list_->Begin(); it != list_->End(); ++it) {
+    EXPECT_TRUE(*it != num_remove);
+  }
+}
+
+TEST_F(RemoveTest, CheckListWithOne) {
+
+  double num_remove = 43.342;
+  list_->Remove(num_remove);
+  num_remove = 7.324;
+  list_->Remove(num_remove);
+  EXPECT_EQ(1, list_->Size());
+}
+
+TEST_F(RemoveTest, CheckLastCase) {
+
+  double num_remove = 7.324;
+  list_->Remove(num_remove);
+
+  LinkedList<double>::iterator it;
+  for(it = list_->Begin(); it != list_->End(); ++it) {
+    EXPECT_TRUE(*it != num_remove);
+  }
+  EXPECT_EQ(2, list_->Size());
 }
 
 
